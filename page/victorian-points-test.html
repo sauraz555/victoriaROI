@@ -191,7 +191,7 @@
     <div>
       <span class="ivpt-badge alert">Victoria changed the rules on 13 October 2026</span>
       <h1>Where do you rank in Victoria's new points test?</h1>
-      <p class="ivpt-hero-lead">Victoria now scores every 190 and 491 applicant out of 950, and only the highest scores are invited. Answer 9 quick questions to see your score and the fastest ways to raise it.</p>
+      <p class="ivpt-hero-lead">Victoria now ranks every Registration of Interest for the 190 and 491 visas on a 950-point test, and the highest scores are invited. Answer 9 quick questions to see your score and the fastest ways to raise it.</p>
       <div class="ivpt-cta-row">
         <a class="ivpt-btn big" href="#ivpt-quiz-card" id="ivpt-hero-cta">Check my score <span class="arr">&#8594;</span></a>
         <a class="ivpt-btn ghost" href="https://interlace.com.au/book-an-appointment">Book An Appointment</a>
@@ -208,7 +208,7 @@
         <li><strong>No pass mark.</strong> You're ranked against everyone else in the pool.</li>
         <li><strong>Every ROI must be lodged again.</strong> Earlier registrations won't carry over to 2026–27.</li>
         <li><strong>New fees.</strong> $60 + GST to register, $180 + GST to apply if invited.</li>
-        <li><strong>Only 4 priority industries.</strong> Everyone else competes on score alone.</li>
+        <li><strong>Only 4 priority industries.</strong> Everyone else competes only in the most competitive stream.</li>
       </ul>
     </div>
   </section>
@@ -683,38 +683,40 @@
     {key:'age', name:'Age', max:300, q:'How old are you?', type:'select', options:ageOpts,
      help:'Age is the most heavily weighted factor in Victoria’s test.'},
     {key:'eng', name:'English', max:200, q:'What is your English language level?',
-     help:'Scores below apply to tests taken on or after 7 August 2025.',
+     help:'Choose the level your test result meets in every component (listening, reading, writing and speaking). Minimum scores are for tests taken on or after 7 August 2025.',
      options:[
-       {v:'c', label:'Competent English', pts:0, desc:'<ul><li>IELTS 6.0+ in each component, or</li><li>PTE Academic: 54 Speaking, 47 Listening, 48 Reading, 51 Writing, or</li><li>Passport from UK, USA, Ireland, Canada or NZ</li></ul>'},
-       {v:'p', label:'Proficient English', pts:100, desc:'<ul><li>IELTS 7.0+ in each component, or</li><li>PTE Academic: 76 Speaking, 58 Listening, 59 Reading, 69 Writing, or</li><li>OET B in each component</li></ul>'},
-       {v:'s', label:'Superior English', pts:200, desc:'<ul><li>IELTS 8.0+ in each component, or</li><li>PTE Academic: 88 Speaking, 69 Listening, 70 Reading, 85 Writing, or</li><li>OET A in each component</li></ul>'}
-     ]},
+       {v:'c', label:'Competent English', pts:0, desc:'<ul><li>IELTS: 6 in each component, or</li><li>PTE Academic: Listening 47, Reading 48, Writing 51, Speaking 54, or</li><li>OET: Listening 290, Reading 310, Writing 290, Speaking 330, or</li><li>A valid passport from the UK, USA, Canada, New Zealand or Ireland</li></ul>'},
+       {v:'p', label:'Proficient English', pts:100, desc:'<ul><li>IELTS: 7 in each component, or</li><li>PTE Academic: Listening 58, Reading 59, Writing 69, Speaking 76, or</li><li>OET: Listening 350, Reading 360, Writing 380, Speaking 360</li></ul>'},
+       {v:'s', label:'Superior English', pts:200, desc:'<ul><li>IELTS: 8 in each component, or</li><li>PTE Academic: Listening 69, Reading 70, Writing 85, Speaking 88, or</li><li>OET: Listening 390, Reading 400, Writing 420, Speaking 400</li></ul>'}
+     ],
+     note:'Took your test before 7 August 2025, or used TOEFL, Cambridge or another test? Different scores apply, so choose your closest level and an agent will confirm it.'},
     {key:'exp', name:'Experience', max:100, q:'How many years of experience do you have in your nominated occupation?',
-     help:'Bands as published by Victoria.', cols:2,
+     help:'Use the experience you claim in your SkillSelect Expression of Interest. Victoria takes this figure from your EOI.', cols:2,
      options:[
        {v:'0', label:'0 years', pts:0},{v:'1', label:'1 year', pts:20},
        {v:'1-3', label:'1–3 years', pts:40},{v:'3-5', label:'3–5 years', pts:60},
        {v:'6-8', label:'6–8 years', pts:80},{v:'8+', label:'More than 8 years', pts:100}
      ],
-     note:'Victoria’s table does not show a band between 5 and 6 years. If this applies to you, talk to us before lodging your ROI.'},
+     note:'These are Victoria’s bands exactly as published. They overlap at 1 and 3 years and don’t show a band for 5 to 6 years. If you fall on one of those points, pick the closest band and an agent will confirm it.'},
     {key:'edu', name:'Education', max:100, q:'What is your highest qualification?', cols:2,
      options:[
-       {v:'o', label:'Other (e.g. diploma or trade qualification)', pts:25},
+       {v:'o', label:'Other (e.g. diploma, advanced diploma or trade qualification)', pts:25},
        {v:'b', label:'Bachelor or Honours degree', pts:50},
        {v:'m', label:'Masters degree', pts:75},
        {v:'d', label:'PhD (Doctorate)', pts:100}
      ]},
     {key:'skill', name:'Skill level', max:50, q:'What is the ANZSCO skill level of your nominated occupation?',
+     help:'Only skill level 1 occupations score points. You can check your occupation’s skill level on the Home Affairs skilled occupation list.',
      options:[
        {v:'1', label:'Skill level 1', desc:'Usually degree-level professional occupations, for example nurses, engineers, accountants, teachers and ICT professionals.', pts:50},
        {v:'23', label:'Skill level 2 or 3', desc:'Usually technician and trade occupations.', pts:0},
        {v:'ns', label:'Not sure', desc:'No problem. We’ll show you what it could be worth.', pts:0}
      ]},
     {key:'ind', name:'Industry', max:0, q:'Is your nominated occupation in one of Victoria’s 2026–27 priority industries?',
-     help:'Priority occupations also get their own invitation stream. Only specific occupations in each industry count.',
+     help:'This doesn’t add points. Priority occupations are also invited in their own stream. Only the specific occupations on Victoria’s list count (see the full list further down this page).',
      cols:2,
      options:[
-       {v:'health', label:'Healthcare', desc:'e.g. registered nurses, midwives, allied health, medical specialists', pts:0},
+       {v:'health', label:'Healthcare', desc:'e.g. registered nurses, midwives, selected allied health and medical specialists (general practitioners are not on the list)', pts:0},
        {v:'social', label:'Social assistance', desc:'e.g. psychologists, social workers, welfare workers', pts:0},
        {v:'edu', label:'Education – Teachers', desc:'Secondary, middle school, special needs and special education teachers', pts:0},
        {v:'ece', label:'Education – Early Childhood', desc:'Early Childhood (Pre-primary School) Teacher', pts:0},
@@ -722,15 +724,16 @@
        {v:'none', label:'None of these / not sure', desc:'e.g. ICT, accounting and most engineering occupations are not on the list', pts:0}
      ]},
     {key:'partner', name:'Partner', max:50, q:'Which best describes your partner situation?',
+     help:'Victoria gives partner points only when all three conditions in the second option are met.',
      options:[
        {v:'single', label:'I am single, or my partner is an Australian citizen or permanent resident', pts:0},
-       {v:'yes', label:'My partner qualifies for 10 partner points, will be included in my visa application, AND their occupation is on Victoria’s priority list', pts:50},
-       {v:'nopri', label:'My partner qualifies for 10 partner points, but their occupation is NOT on Victoria’s priority list', pts:0},
-       {v:'no', label:'My partner does not qualify for partner skill points', pts:0}
+       {v:'yes', label:'All three apply: I claimed 10 partner skill points in my SkillSelect EOI, my partner will be included in my state-nominated visa application, and my partner’s occupation is on Victoria’s priority list', pts:50},
+       {v:'nopri', label:'I claimed 10 partner skill points, but my partner’s occupation is NOT on Victoria’s priority list', pts:0},
+       {v:'no', label:'I have a partner, but I did not claim the 10 partner skill points', pts:0}
      ]},
     {key:'earn', name:'Earnings', max:150, q:'Last one: what are your annual earnings from your current skilled employment in Victoria?',
      type:'select', options:earnOpts,
-     help:'Only earnings from current skilled employment in Victoria count. If you live overseas or interstate, choose “Not living and working in skilled employment in Victoria”.'}
+     help:'Only annual earnings from your current skilled employment in Victoria count. Victoria’s <a href="https://liveinmelbourne.vic.gov.au/migrate/skilled-migration-visas/earnings-calculator" target="_blank" rel="noopener">Annual Earnings Estimation guide</a> explains how to work this out. If you live overseas or interstate, choose “Not living and working in skilled employment in Victoria”.'}
   ];
   var GATE = STEPS.length;            // step index of the "result is ready" gate
   var TOTAL_STEPS = STEPS.length + 1;
@@ -773,7 +776,7 @@
       if (cur < 150) g.push([150 - cur, 'Higher Victorian earnings, up to 150 points at $170,000+.']);
     }
     if (answers.skill === 'ns') g.push([50, 'If your occupation is ANZSCO skill level 1. We can confirm this for you.']);
-    if (answers.partner === 'no') g.push([50, 'If your partner gets a positive skills assessment in a priority occupation.']);
+    if (answers.partner === 'no') g.push([50, 'If you can claim the 10 SkillSelect partner points and your partner’s occupation is on Victoria’s priority list.']);
     var expNext = {'0':20,'1':20,'1-3':20,'3-5':20,'6-8':20};
     if (expNext[answers.exp]) g.push([expNext[answers.exp], 'Moving into the next experience band as you keep working in your occupation.']);
     return g;

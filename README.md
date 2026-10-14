@@ -100,6 +100,13 @@ Pushed to `dataLayer` (GA4 via GTM) and the Meta pixel if they're on the page:
 
 The drop-off between `ivpt_gate_view` and `ivpt_lead` is the number to watch.
 
+## Accuracy check (14 October 2026)
+
+- Every points value in the page and the plugin was checked against Victoria's Victorian Points Test page: age, English, experience, education, skill level, partner and all 19 earnings bands. Six test profiles, including the 950 maximum and an over-45 case, score the same on the official tables, the page and the plugin.
+- English test scores in the questions match the Home Affairs Competent, Proficient and Superior English pages for tests taken on or after 7 August 2025 (IELTS, PTE Academic, OET).
+- The partner option uses Victoria's three conditions word for word: 10 partner points claimed in the EOI, partner included in the state-nominated application, and partner's occupation on the priority list.
+- Victoria's experience bands overlap at 1 and 3 years and skip 5 to 6 years. The page shows them exactly as published and tells people in those gaps to check with an agent.
+
 ## Source
 
 Points tables, fees and priority occupations: Victorian Government, [Live in Melbourne – Victorian Points Test](https://liveinmelbourne.vic.gov.au/migrate/skilled-migration-visas/vpt) and [2026–27 program update](https://liveinmelbourne.vic.gov.au/news-events/news/2026/update-victorias-skilled-visa-nomination-program-2026-27) (13 October 2026). Update the tables in both the page and the plugin if Victoria changes them.

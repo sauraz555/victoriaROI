@@ -76,7 +76,7 @@ final class Interlace_VPT_Leads {
 				'8+'  => array( 'More than 8 years', 100 ),
 			),
 			'edu'     => array(
-				'o' => array( 'Other (diploma / trade)', 25 ),
+				'o' => array( 'Other (diploma / advanced diploma / trade)', 25 ),
 				'b' => array( 'Bachelor or Honours', 50 ),
 				'm' => array( 'Masters', 75 ),
 				'd' => array( 'PhD', 100 ),
@@ -96,9 +96,9 @@ final class Interlace_VPT_Leads {
 			),
 			'partner' => array(
 				'single' => array( 'Single, or partner is an Australian citizen/PR', 0 ),
-				'yes'    => array( 'Partner qualifies and is in a priority occupation', 50 ),
-				'nopri'  => array( 'Partner qualifies but NOT in a priority occupation', 0 ),
-				'no'     => array( 'Partner does not qualify for partner points', 0 ),
+				'yes'    => array( 'Claimed 10 EOI partner points, partner included, priority occupation', 50 ),
+				'nopri'  => array( 'Claimed 10 EOI partner points, but partner NOT in a priority occupation', 0 ),
+				'no'     => array( 'Has a partner but did not claim the 10 EOI partner points', 0 ),
 			),
 		);
 	}
@@ -306,7 +306,7 @@ final class Interlace_VPT_Leads {
 			$g[] = array( 50, 'Unsure of skill level: +50 if their occupation is ANZSCO skill level 1' );
 		}
 		if ( isset( $a['partner'] ) && 'no' === $a['partner'] ) {
-			$g[] = array( 50, 'Partner skills assessment in a priority occupation' );
+			$g[] = array( 50, 'Partner: claim the 10 EOI partner points with a partner in a priority occupation' );
 		}
 		if ( isset( $a['exp'] ) && in_array( $a['exp'], array( '0', '1', '1-3', '3-5', '6-8' ), true ) ) {
 			$g[] = array( 20, 'Next experience band' );
@@ -521,6 +521,12 @@ final class Interlace_VPT_Leads {
 		}
 		if ( 'nopri' === $r['partner'] ) {
 			$tp[] = 'Partner gets 10 SkillSelect points but 0 VPT points (occupation not on the priority list).';
+		}
+		if ( 'no' === $r['partner'] ) {
+			$tp[] = 'Has a partner but no partner points claimed. Check whether the partner could get a skills assessment and Competent English.';
+		}
+		if ( in_array( $r['eng'], array( 'c', 'p', 's' ), true ) ) {
+			$tp[] = 'Confirm their English test date and type: the levels shown assume IELTS/PTE/OET taken on or after 7 Aug 2025.';
 		}
 		if ( 'ece' === $r['ind'] ) {
 			$tp[] = 'Early childhood teacher: Victoria prioritises 1+ year experience AND Proficient/Superior English.';
