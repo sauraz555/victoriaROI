@@ -1,0 +1,1015 @@
+<!--
+  Interlace Studies — Victorian Points Test (VPT) lead funnel
+  Paste into a WordPress "Custom HTML" block on a new page (suggested slug: /victorian-points-test/).
+  Needs the "Interlace VPT Leads" plugin active (it receives the form and emails sales@ via Resend).
+  Self-contained: scoped CSS (.ivpt), vanilla JS, no external libraries.
+  Points tables: Live in Melbourne (Victorian Government), Victorian Points Test page, published 13 Oct 2026.
+-->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+.ivpt{--p:#3267AD;--a:#1E96E0;--t:#666;--td:#212529;--tint:#EAF2FA;--line:#DCE6F2;--pill:800px;--wa:#25D366;
+  font-family:"Poppins",sans-serif;color:var(--t);font-size:15px;line-height:1.6;max-width:1200px;margin:0 auto;padding:24px 16px 48px;box-sizing:border-box}
+.ivpt *,.ivpt *::before,.ivpt *::after{box-sizing:border-box}
+.ivpt h1,.ivpt h2,.ivpt h3{font-family:"Playfair Display",serif;font-weight:700;color:var(--p);margin:0 0 12px;line-height:1.25}
+.ivpt h1{font-size:40px}.ivpt h2{font-size:30px}.ivpt h3{font-size:22px}
+.ivpt p{margin:0 0 12px}
+.ivpt a{color:var(--p)}
+.ivpt .ivpt-badge{display:inline-block;background:var(--tint);color:var(--p);font-weight:600;font-size:13px;padding:6px 14px;border-radius:var(--pill);margin-bottom:14px}
+.ivpt .ivpt-badge.alert{background:#FFF4E5;color:#9A5B00}
+
+/* hero */
+.ivpt .ivpt-hero{display:grid;grid-template-columns:1.4fr 1fr;gap:32px;align-items:center;margin-bottom:28px}
+.ivpt .ivpt-hero-lead{font-size:17px;color:var(--td)}
+.ivpt .ivpt-hero-card{background:var(--p);color:#fff;border-radius:20px;padding:24px}
+.ivpt .ivpt-hero-card h3{color:#fff;font-size:20px;margin-bottom:10px}
+.ivpt .ivpt-hero-card ul{margin:0;padding:0;list-style:none}
+.ivpt .ivpt-hero-card li{position:relative;padding-left:26px;margin-bottom:10px;font-size:14px}
+.ivpt .ivpt-hero-card li::before{content:"!";position:absolute;left:0;top:2px;width:18px;height:18px;border-radius:50%;background:#fff;color:var(--p);font-size:11px;font-weight:700;display:grid;place-items:center}
+.ivpt .ivpt-trust-strip{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:16px;font-size:13px;color:var(--td)}
+.ivpt .ivpt-trust-strip span::before{content:"\2713";color:var(--p);font-weight:700;margin-right:6px}
+
+/* layout */
+.ivpt .ivpt-wrap{display:grid;grid-template-columns:1fr 330px;gap:28px;align-items:start;scroll-margin-top:110px}
+.ivpt .ivpt-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:0 6px 24px rgba(50,103,173,.06)}
+.ivpt .ivpt-step-label{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:600;color:var(--p);margin-bottom:8px}
+.ivpt .ivpt-progress{height:6px;background:var(--tint);border-radius:var(--pill);overflow:hidden;margin-bottom:22px}
+.ivpt .ivpt-progress span{display:block;height:100%;background:var(--p);border-radius:var(--pill);transition:width .3s}
+.ivpt .ivpt-q{font-family:"Poppins",sans-serif;font-size:20px;font-weight:600;color:var(--td);margin:0 0 6px}
+.ivpt .ivpt-help{font-size:14px;margin-bottom:18px}
+.ivpt .ivpt-options{display:grid;gap:12px}
+.ivpt .ivpt-options.cols-2{grid-template-columns:1fr 1fr}
+.ivpt .ivpt-opt{display:block;width:100%;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:14px 18px;cursor:pointer;font:inherit;color:var(--td);transition:border-color .15s,background .15s}
+.ivpt .ivpt-opt:hover{border-color:var(--a)}
+.ivpt .ivpt-opt.is-on{border-color:var(--p);background:var(--tint)}
+.ivpt .ivpt-opt-top{display:block;font-weight:600}
+.ivpt .ivpt-opt-desc{display:block;font-size:13px;color:var(--t);font-weight:400;margin-top:4px}
+.ivpt .ivpt-opt-desc ul{margin:6px 0 0;padding-left:18px}
+.ivpt select{width:100%;font:inherit;color:var(--td);padding:14px 16px;border:1.5px solid var(--line);border-radius:14px;background:#fff}
+.ivpt select:focus,.ivpt .ivpt-opt:focus-visible,.ivpt .ivpt-btn:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+.ivpt .ivpt-note{font-size:13px;background:var(--tint);border-radius:12px;padding:10px 14px;margin-top:14px}
+.ivpt .ivpt-nav{display:flex;justify-content:space-between;gap:12px;margin-top:24px}
+.ivpt .ivpt-btn{display:inline-flex;align-items:center;gap:8px;font:inherit;font-weight:600;border-radius:var(--pill);padding:11px 24px;cursor:pointer;text-decoration:none;border:1px solid var(--p);background:var(--p);color:#fff}
+.ivpt .ivpt-btn[disabled]{opacity:.45;cursor:not-allowed}
+.ivpt .ivpt-btn[aria-busy=true]{opacity:.6;pointer-events:none}
+.ivpt .ivpt-btn.ghost{background:transparent;color:var(--a);border-color:var(--a)}
+.ivpt .ivpt-btn.big{padding:14px 28px;font-size:16px}
+.ivpt .ivpt-btn .arr{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#fff;color:var(--p);font-size:13px}
+.ivpt .ivpt-btn.ghost .arr{background:var(--a);color:#fff}
+.ivpt .ivpt-step-help{margin-top:18px;padding-top:14px;border-top:1px solid var(--line);font-size:13px;text-align:center}
+.ivpt .ivpt-step-help a{font-weight:600}
+.ivpt .ivpt-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+
+/* side panel */
+.ivpt .ivpt-side{position:sticky;top:110px;padding:24px}
+.ivpt .ivpt-side h3{font-size:20px;margin-bottom:12px}
+.ivpt .ivpt-lockbox{display:flex;gap:12px;align-items:center;background:var(--tint);border-radius:14px;padding:12px 14px}
+.ivpt .ivpt-lockbox strong{display:block;color:var(--td);font-size:14px}
+.ivpt .ivpt-lockbox span{font-size:13px}
+.ivpt .ivpt-lockbox.is-open strong{font-family:"Playfair Display",serif;color:var(--p);font-size:30px;line-height:1.1}
+.ivpt .ivpt-lock-ico{flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--p);color:#fff}
+.ivpt .ivpt-prof{list-style:none;margin:14px 0 0;padding:0}
+.ivpt .ivpt-prof li{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:13px;color:var(--td)}
+.ivpt .ivpt-prof li span:last-child{color:var(--t);text-align:right}
+.ivpt .ivpt-prof li.done span:first-child::before{content:"\2713";color:var(--p);font-weight:700;margin-right:6px}
+.ivpt .ivpt-prof li:not(.done) span:first-child::before{content:"\25CB";color:#BBB;margin-right:6px}
+.ivpt .ivpt-side-trust{list-style:none;margin:14px 0 0;padding:12px 0 0;border-top:1px solid var(--line);font-size:12px}
+.ivpt .ivpt-side-trust li{margin-bottom:4px}
+.ivpt .ivpt-side-trust li::before{content:"\2713";color:var(--p);font-weight:700;margin-right:6px}
+.ivpt .ivpt-side-cta{width:100%;justify-content:center;margin-top:14px}
+
+/* gate */
+.ivpt .ivpt-locked{border:1.5px dashed var(--p);border-radius:18px;padding:18px 20px;margin-bottom:20px;background:linear-gradient(180deg,#F5F9FD,#fff)}
+.ivpt .ivpt-locked-score{display:flex;align-items:baseline;gap:8px;font-family:"Playfair Display",serif;color:var(--p);font-size:44px;line-height:1}
+.ivpt .ivpt-locked-score small{font-family:"Poppins",sans-serif;font-size:16px;color:var(--t)}
+.ivpt .ivpt-blur{filter:blur(9px);user-select:none}
+.ivpt .ivpt-locked ul{list-style:none;margin:14px 0 0;padding:0}
+.ivpt .ivpt-locked li{position:relative;padding-left:26px;margin-bottom:6px;font-size:14px;color:var(--td)}
+.ivpt .ivpt-locked li::before{content:"\2713";position:absolute;left:0;top:2px;width:18px;height:18px;border-radius:50%;background:var(--p);color:#fff;font-size:11px;display:grid;place-items:center}
+.ivpt .ivpt-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ivpt .ivpt-fields .full{grid-column:1/-1}
+.ivpt .ivpt-fields label>span{display:block;font-size:12px;font-weight:600;color:var(--td);margin-bottom:4px}
+.ivpt .ivpt-fields label>span em{font-style:normal;font-weight:400;color:#999}
+.ivpt input[type=text],.ivpt input[type=tel],.ivpt input[type=email]{width:100%;font:inherit;color:var(--td);padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;background:#fff}
+.ivpt input:focus{outline:2px solid var(--a);outline-offset:1px;border-color:var(--a)}
+.ivpt input.is-bad{border-color:#D9534F}
+.ivpt .ivpt-check{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--td);margin-top:12px;cursor:pointer}
+.ivpt .ivpt-check input{margin-top:3px;width:16px;height:16px;accent-color:var(--p)}
+.ivpt .ivpt-gate-btn{width:100%;justify-content:center;margin-top:16px}
+.ivpt .ivpt-consent{font-size:11px;color:#888;margin:8px 0 0;line-height:1.5}
+.ivpt .ivpt-form-msg{font-size:13px;font-weight:600;margin:8px 0 0}
+.ivpt .ivpt-form-msg:empty{display:none}
+.ivpt .ivpt-form-msg.ok{color:#128C4A}
+.ivpt .ivpt-form-msg.err{color:#D9534F}
+.ivpt .ivpt-alt{text-align:center;font-size:13px;margin-top:14px}
+.ivpt .ivpt-alt a{font-weight:600;color:#128C4A}
+.ivpt .ivpt-hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;opacity:0}
+
+/* result */
+.ivpt .ivpt-result{display:none}
+.ivpt .ivpt-result.is-on{display:block}
+.ivpt .ivpt-score-big{font-family:"Playfair Display",serif;font-size:72px;color:var(--p);line-height:1}
+.ivpt .ivpt-score-big small{font-family:"Poppins",sans-serif;font-size:18px;color:var(--t)}
+.ivpt .ivpt-confirm{background:#EAF7EF;color:#14532D;border-radius:12px;padding:10px 14px;font-size:14px;margin:14px 0}
+.ivpt .ivpt-bd{list-style:none;margin:8px 0 0;padding:0}
+.ivpt .ivpt-bd li{padding:9px 0;border-top:1px solid var(--line);font-size:14px}
+.ivpt .ivpt-bd-top{display:flex;justify-content:space-between;gap:10px;color:var(--td)}
+.ivpt .ivpt-bd-top b{color:var(--p);white-space:nowrap}
+.ivpt .ivpt-bd-top small{color:var(--t)}
+.ivpt .ivpt-bar{height:5px;background:var(--tint);border-radius:var(--pill);margin-top:6px;overflow:hidden}
+.ivpt .ivpt-bar span{display:block;height:100%;background:var(--p)}
+.ivpt .ivpt-gains{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:10px}
+.ivpt .ivpt-gains li{display:flex;gap:14px;align-items:center;background:var(--tint);border-radius:14px;padding:12px 14px;color:var(--td);font-size:14px}
+.ivpt .ivpt-gains b{flex:none;font-family:"Playfair Display",serif;color:var(--p);font-size:20px;min-width:64px}
+.ivpt .ivpt-tips{list-style:none;padding:0;margin:12px 0}
+.ivpt .ivpt-tips li{position:relative;padding:10px 12px 10px 40px;border-radius:12px;background:#F7F9FC;margin-bottom:10px;color:var(--td);font-size:14px}
+.ivpt .ivpt-tips li::before{content:"\2713";position:absolute;left:12px;top:10px;width:20px;height:20px;border-radius:50%;background:var(--p);color:#fff;font-size:12px;display:grid;place-items:center}
+.ivpt .ivpt-offer{margin-top:24px;border:1.5px solid var(--p);border-radius:20px;padding:22px}
+.ivpt .ivpt-offer h3{margin-bottom:6px}
+.ivpt .ivpt-wa{display:flex;align-items:center;gap:14px;text-decoration:none;background:var(--wa);color:#fff;border-radius:16px;padding:14px 18px;margin-top:12px}
+.ivpt .ivpt-wa:hover{filter:brightness(.95)}
+.ivpt .ivpt-wa strong{display:block;font-size:16px}
+.ivpt .ivpt-wa small{display:block;font-size:12px;opacity:.95}
+.ivpt .ivpt-wa > span:nth-child(2){flex:1}
+.ivpt .ivpt-wa-ico{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2)}
+.ivpt .ivpt-wa .arr{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#fff;color:#128C4A;font-size:14px}
+
+/* info sections */
+.ivpt .ivpt-band{background:var(--tint);border-radius:24px;padding:32px;margin-top:48px}
+.ivpt .ivpt-grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:16px}
+.ivpt .ivpt-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+.ivpt .ivpt-mini{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px}
+.ivpt .ivpt-mini h4{margin:0 0 6px;color:var(--td);font-size:16px;font-weight:600}
+.ivpt .ivpt-mini p{font-size:13px;margin:0}
+.ivpt table{width:100%;border-collapse:collapse;font-size:14px;margin-top:12px;background:#fff;border-radius:14px;overflow:hidden}
+.ivpt th,.ivpt td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.ivpt th{background:var(--p);color:#fff;font-weight:600}
+.ivpt .ivpt-changed td:last-child{color:var(--td);font-weight:500}
+.ivpt details{background:#fff;border:1px solid var(--line);border-radius:16px;margin-top:12px;overflow:hidden}
+.ivpt summary{cursor:pointer;list-style:none;padding:16px 20px;font-weight:600;color:var(--td);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.ivpt summary::-webkit-details-marker{display:none}
+.ivpt summary::after{content:"+";flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--tint);color:var(--p);font-size:18px;line-height:1}
+.ivpt details[open] summary::after{content:"\2212"}
+.ivpt .ivpt-acc-body{padding:0 20px 18px}
+.ivpt .ivpt-acc-body table{margin-top:4px}
+.ivpt .ivpt-acc-body h4{color:var(--p);font-size:15px;margin:16px 0 6px}
+.ivpt .ivpt-codes{font-size:13px;margin:0;padding-left:18px}
+.ivpt .ivpt-codes li{margin-bottom:2px}
+.ivpt .ivpt-tables{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ivpt .ivpt-tables table{margin-top:0}
+.ivpt .ivpt-tag{display:inline-block;font-size:11px;font-weight:600;border-radius:var(--pill);padding:1px 8px;margin-left:6px;background:var(--tint);color:var(--p)}
+.ivpt .ivpt-tag.out{background:#F3F3F3;color:#888}
+.ivpt .ivpt-checklist{list-style:none;padding:0;margin:12px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ivpt .ivpt-checklist li{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 12px 42px;position:relative;font-size:14px;color:var(--td)}
+.ivpt .ivpt-checklist li::before{content:"\2713";position:absolute;left:12px;top:12px;width:20px;height:20px;border-radius:50%;background:var(--p);color:#fff;font-size:12px;display:grid;place-items:center}
+.ivpt .ivpt-sources{font-size:13px;padding-left:18px;margin:8px 0 0}
+.ivpt .ivpt-disclaimer{font-size:12px;color:#888;margin-top:32px;border-top:1px solid var(--line);padding-top:16px}
+
+@media (max-width:960px){
+  .ivpt .ivpt-wrap,.ivpt .ivpt-hero{grid-template-columns:1fr}
+  .ivpt .ivpt-side{position:static}
+  .ivpt .ivpt-grid4{grid-template-columns:1fr 1fr}
+}
+@media (max-width:760px){
+  .ivpt .ivpt-tables,.ivpt .ivpt-checklist,.ivpt .ivpt-grid3{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .ivpt h1{font-size:30px}.ivpt h2{font-size:24px}
+  .ivpt .ivpt-card{padding:20px}
+  .ivpt .ivpt-options.cols-2,.ivpt .ivpt-grid4,.ivpt .ivpt-fields{grid-template-columns:1fr}
+  .ivpt .ivpt-nav .ivpt-btn{padding:10px 18px}
+  .ivpt .ivpt-band{padding:22px}
+  .ivpt table{display:block;overflow-x:auto}
+  .ivpt .ivpt-score-big{font-size:58px}
+}
+</style>
+
+<div class="ivpt" id="ivpt">
+
+  <!-- 1. HOOK -->
+  <section class="ivpt-hero">
+    <div>
+      <span class="ivpt-badge alert">Victoria changed the rules on 13 October 2026</span>
+      <h1>Where do you rank in Victoria's new points test?</h1>
+      <p class="ivpt-hero-lead">Victoria now scores every 190 and 491 applicant out of 950, and only the highest scores are invited. Answer 9 quick questions to see your score and the fastest ways to raise it.</p>
+      <div class="ivpt-cta-row">
+        <a class="ivpt-btn big" href="#ivpt-quiz-card" id="ivpt-hero-cta">Check my score <span class="arr">&#8594;</span></a>
+        <a class="ivpt-btn ghost" href="https://interlace.com.au/book-an-appointment">Book An Appointment</a>
+      </div>
+      <div class="ivpt-trust-strip">
+        <span>Takes about 1 minute</span>
+        <span>Based on Victoria's official tables</span>
+        <span>Built by MARA-registered agents</span>
+      </div>
+    </div>
+    <div class="ivpt-hero-card">
+      <h3>Why this matters now</h3>
+      <ul>
+        <li><strong>No pass mark.</strong> You're ranked against everyone else in the pool.</li>
+        <li><strong>Every ROI must be lodged again.</strong> Earlier registrations won't carry over to 2026–27.</li>
+        <li><strong>New fees.</strong> $60 + GST to register, $180 + GST to apply if invited.</li>
+        <li><strong>Only 4 priority industries.</strong> Everyone else competes on score alone.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 2. QUIZ (commitment ladder) -->
+  <div class="ivpt-wrap" id="ivpt-quiz-card">
+    <div class="ivpt-card" aria-live="polite">
+      <div id="ivpt-quiz">
+        <div class="ivpt-step-label"><span id="ivpt-step-name">Visa subclass</span><span id="ivpt-step-count">Step 1 of 10</span></div>
+        <div class="ivpt-progress"><span id="ivpt-progress" style="width:10%"></span></div>
+        <div id="ivpt-step"></div>
+        <div class="ivpt-nav" id="ivpt-nav">
+          <button type="button" class="ivpt-btn ghost" id="ivpt-prev">Previous</button>
+          <button type="button" class="ivpt-btn" id="ivpt-next" disabled>Next <span class="arr">&#8594;</span></button>
+        </div>
+        <div class="ivpt-step-help" id="ivpt-step-help">Prefer to talk it through? <a href="https://interlace.com.au/book-an-appointment">Book an appointment</a> with a registered migration agent.</div>
+      </div>
+
+      <!-- 4. REVEAL + OFFER -->
+      <div class="ivpt-result" id="ivpt-result">
+        <span class="ivpt-badge">Your Victorian Points Test result</span>
+        <p class="ivpt-q" id="ivpt-res-hello" style="margin-bottom:4px"></p>
+        <div class="ivpt-score-big"><span id="ivpt-res-total">0</span><small> / 950</small></div>
+        <p style="margin-top:10px">Victoria has no pass mark. Registrations of Interest are ranked against each other, and the highest scores are invited in each round.</p>
+        <div class="ivpt-confirm" id="ivpt-confirm"></div>
+
+        <h3 style="margin-top:22px">Points you could still gain</h3>
+        <ul class="ivpt-gains" id="ivpt-gains"></ul>
+
+        <div class="ivpt-offer">
+          <h3>Get your personal plan from a registered agent</h3>
+          <p>In one session we'll confirm your score, check your SkillSelect points, and map out how to lift your ranking before Victoria opens.</p>
+          <div class="ivpt-cta-row" style="margin-top:12px">
+            <a class="ivpt-btn big" href="https://interlace.com.au/book-an-appointment" id="ivpt-book">Book An Appointment <span class="arr">&#8594;</span></a>
+          </div>
+          <a class="ivpt-wa" id="ivpt-wa" href="https://wa.me/61481697403" target="_blank" rel="noopener">
+            <span class="ivpt-wa-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.1.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .2-1.2c-.1-.1-.3-.2-.5-.3Z"/></svg></span>
+            <span><strong>Or ask us on WhatsApp now</strong><small>Your score and answers are already in the message.</small></span>
+            <span class="arr" aria-hidden="true">&#8594;</span>
+          </a>
+        </div>
+
+        <h3 style="margin-top:28px">Your score breakdown</h3>
+        <ul class="ivpt-bd" id="ivpt-bd"></ul>
+
+        <h3 style="margin-top:28px">What this means for you</h3>
+        <ul class="ivpt-tips" id="ivpt-tips"></ul>
+        <div class="ivpt-cta-row">
+          <button type="button" class="ivpt-btn ghost" id="ivpt-restart">Check another profile</button>
+        </div>
+      </div>
+    </div>
+
+    <aside class="ivpt-card ivpt-side">
+      <h3>Your profile</h3>
+      <div class="ivpt-lockbox" id="ivpt-lockbox">
+        <span class="ivpt-lock-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5Zm-3 8V7a3 3 0 1 1 6 0v3H9Z"/></svg></span>
+        <div><strong id="ivpt-side-score">Score locked</strong><span id="ivpt-side-sub">Revealed after the last step</span></div>
+      </div>
+      <ul class="ivpt-prof" id="ivpt-rows"></ul>
+      <ul class="ivpt-side-trust">
+        <li>MARA-registered migration agents</li>
+        <li>Offices in Australia and overseas since 2018</li>
+        <li>Your details stay private</li>
+      </ul>
+      <a class="ivpt-btn ivpt-side-cta" href="https://interlace.com.au/book-an-appointment">Book An Appointment <span class="arr">&#8594;</span></a>
+    </aside>
+  </div>
+
+  <!-- 5. EDUCATION + OBJECTION HANDLING -->
+  <section class="ivpt-band">
+    <h2>What changed for Victoria in 2026–27</h2>
+    <p>On 13 October 2026 the Victorian Government published the weightings of its points test and introduced fees for the first time.</p>
+    <div class="ivpt-grid4">
+      <div class="ivpt-mini"><h4>Published points</h4><p>The same seven factors as before, now with published scores out of 950.</p></div>
+      <div class="ivpt-mini"><h4>New fees</h4><p>$60 + GST for an ROI and $180 + GST for a 190 or 491 nomination application.</p></div>
+      <div class="ivpt-mini"><h4>Re-submit your ROI</h4><p>ROIs from earlier program years will not carry over. A new ROI is needed when the program opens.</p></div>
+      <div class="ivpt-mini"><h4>4 priority industries</h4><p>Healthcare, Social assistance, Education and Construction get their own invitation stream.</p></div>
+    </div>
+
+    <h3 style="margin-top:28px">2026–27 fees</h3>
+    <table>
+      <thead><tr><th>Fee</th><th>Excl. GST</th><th>Incl. GST*</th><th>When charged</th></tr></thead>
+      <tbody>
+        <tr><td>Registration of Interest</td><td>$60</td><td>$66</td><td>Once per program year</td></tr>
+        <tr><td>Subclass 190 nomination application</td><td>$180</td><td>$198</td><td>Only if invited and you apply</td></tr>
+        <tr><td>Subclass 491 nomination application</td><td>$180</td><td>$198</td><td>Only if invited and you apply</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:13px;margin-top:8px">*GST applies if you are in Australia at the time of payment.</p>
+  </section>
+
+  <section style="margin-top:48px">
+    <h2>How Victoria selects ROIs</h2>
+    <table>
+      <thead><tr><th>Stream</th><th>Who is invited in each round</th></tr></thead>
+      <tbody>
+        <tr><td>Most competitive</td><td>The highest VPT scores across all eligible occupations in the pool.</td></tr>
+        <tr><td>Priority industry</td><td>The highest VPT scores within each priority industry: Healthcare, Social assistance, Education (Teachers and Early Childhood) and Construction (Professionals and Trades).</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:14px">You also need at least 65 points on the Australian Government points test (including nomination points) to be eligible for the visa. The VPT only decides your ranking for Victorian nomination.</p>
+    <div class="ivpt-cta-row">
+      <a class="ivpt-btn" href="#ivpt-quiz-card">Check my VPT score <span class="arr">&#8594;</span></a>
+      <a class="ivpt-btn ghost" href="https://interlace.com.au/pr-eligibility/">Check my GSM points</a>
+    </div>
+  </section>
+
+  <section class="ivpt-band">
+    <h2>2025–26 vs 2026–27: side-by-side</h2>
+    <p>The selection factors are the same. What changed is cost, transparency, the priority list, and how partners and old ROIs are treated.</p>
+    <table class="ivpt-changed">
+      <thead><tr><th>Area</th><th>2025–26 (previous)</th><th>2026–27 (new)</th></tr></thead>
+      <tbody>
+        <tr><td>ROI fee</td><td>Free</td><td>$60 + GST</td></tr>
+        <tr><td>Nomination fee (190 or 491)</td><td>Free</td><td>$180 + GST, only if invited and you apply</td></tr>
+        <tr><td>Ranking method</td><td>Ranked on a combination of factors; weights never published</td><td>Victorian Points Test with published points (max 950)</td></tr>
+        <tr><td>Selection factors</td><td>Age, English, experience, education, occupation skill level, partner skill, salary (onshore only)</td><td>Same seven factors</td></tr>
+        <tr><td>Pass mark</td><td>None; competitive</td><td>None; competitive</td></tr>
+        <tr><td>Invitation streams</td><td>Most competitive, with certain sectors prioritised</td><td>Two explicit streams: most competitive overall, and highest VPT within each priority industry</td></tr>
+        <tr><td>Priority sectors</td><td>7: Health, Social services, Education, Construction, New Energy, Advanced manufacturing, Hospitality and tourism (491 only)</td><td>4: Healthcare, Social assistance, Education, Construction</td></tr>
+        <tr><td>Partner points</td><td>Counted if claimed (not if partner is an Australian citizen or PR)</td><td>50 points only if the partner's occupation is on the priority list</td></tr>
+        <tr><td>Victorian earnings</td><td>Onshore estimate; weight unknown</td><td>8 to 150 points, from $80,000 to $170,000+</td></tr>
+        <tr><td>Earlier ROIs</td><td>2024–25 ROIs stayed valid</td><td>Must submit a new ROI</td></tr>
+        <tr><td>Federal minimum</td><td>65 SkillSelect points</td><td>65 SkillSelect points (unchanged)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section style="margin-top:48px">
+    <h2>Three changes that catch people out</h2>
+    <div class="ivpt-grid3">
+      <div class="ivpt-mini"><h4>Partner points are narrower</h4><p>Your partner must qualify for the 10 SkillSelect partner points, be included in your visa application, and have an occupation on Victoria's priority list. Otherwise they score 0 in the VPT, even though they still count for 10 federal points.</p></div>
+      <div class="ivpt-mini"><h4>Earnings now carry real weight</h4><p>Earnings from current skilled employment in Victoria are worth up to 150 points. Under $80,000, or living outside Victoria, scores 0. You must be able to evidence what you claim, or the nomination can be refused.</p></div>
+      <div class="ivpt-mini"><h4>Old ROIs don't carry over</h4><p>In 2025–26, earlier ROIs stayed valid. For 2026–27, everyone must lodge a new ROI (and pay the $60 + GST fee) when the program opens.</p></div>
+    </div>
+  </section>
+
+  <section style="margin-top:48px">
+    <h2>Full Victorian Points Test tables</h2>
+    <p>Age and English together are worth 500 of the 950 points, so they decide most rankings.</p>
+
+    <details>
+      <summary>Points by factor (maximum score)</summary>
+      <div class="ivpt-acc-body">
+        <table>
+          <thead><tr><th>Factor</th><th>Maximum points</th><th>Share of 950</th></tr></thead>
+          <tbody>
+            <tr><td>Age</td><td>300</td><td>32%</td></tr>
+            <tr><td>English language</td><td>200</td><td>21%</td></tr>
+            <tr><td>Annual earnings in Victoria</td><td>150</td><td>16%</td></tr>
+            <tr><td>Years of experience</td><td>100</td><td>11%</td></tr>
+            <tr><td>Education</td><td>100</td><td>11%</td></tr>
+            <tr><td>Occupation skill level</td><td>50</td><td>5%</td></tr>
+            <tr><td>Partner's skill</td><td>50</td><td>5%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+    <details>
+      <summary>Age</summary>
+      <div class="ivpt-acc-body ivpt-tables">
+        <table>
+          <thead><tr><th>Age</th><th>Points</th></tr></thead>
+          <tbody>
+            <tr><td>18</td><td>265</td></tr><tr><td>19</td><td>282</td></tr><tr><td>20–29</td><td>300</td></tr>
+            <tr><td>30</td><td>286</td></tr><tr><td>31</td><td>270</td></tr><tr><td>32</td><td>256</td></tr>
+            <tr><td>33</td><td>240</td></tr><tr><td>34</td><td>226</td></tr><tr><td>35</td><td>210</td></tr>
+          </tbody>
+        </table>
+        <table>
+          <thead><tr><th>Age</th><th>Points</th></tr></thead>
+          <tbody>
+            <tr><td>36</td><td>196</td></tr><tr><td>37</td><td>180</td></tr><tr><td>38</td><td>166</td></tr>
+            <tr><td>39</td><td>150</td></tr><tr><td>40</td><td>136</td></tr><tr><td>41</td><td>106</td></tr>
+            <tr><td>42</td><td>76</td></tr><tr><td>43</td><td>46</td></tr><tr><td>44</td><td>16</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+    <details>
+      <summary>English, experience, education and skill level</summary>
+      <div class="ivpt-acc-body ivpt-tables">
+        <table>
+          <thead><tr><th>English</th><th>Points</th></tr></thead>
+          <tbody><tr><td>Competent</td><td>0</td></tr><tr><td>Proficient</td><td>100</td></tr><tr><td>Superior</td><td>200</td></tr></tbody>
+        </table>
+        <table>
+          <thead><tr><th>Experience in nominated occupation</th><th>Points</th></tr></thead>
+          <tbody>
+            <tr><td>0 years</td><td>0</td></tr><tr><td>1 year</td><td>20</td></tr><tr><td>1–3 years</td><td>40</td></tr>
+            <tr><td>3–5 years</td><td>60</td></tr><tr><td>6–8 years</td><td>80</td></tr><tr><td>More than 8 years</td><td>100</td></tr>
+          </tbody>
+        </table>
+        <table>
+          <thead><tr><th>Education</th><th>Points</th></tr></thead>
+          <tbody><tr><td>Other</td><td>25</td></tr><tr><td>Bachelor or Honours</td><td>50</td></tr><tr><td>Masters</td><td>75</td></tr><tr><td>PhD</td><td>100</td></tr></tbody>
+        </table>
+        <table>
+          <thead><tr><th>Occupation skill level</th><th>Points</th></tr></thead>
+          <tbody><tr><td>Skill level 1</td><td>50</td></tr><tr><td>Skill level 2</td><td>0</td></tr><tr><td>Skill level 3</td><td>0</td></tr></tbody>
+        </table>
+      </div>
+    </details>
+
+    <details>
+      <summary>Partner's skill</summary>
+      <div class="ivpt-acc-body">
+        <table>
+          <thead><tr><th>Requirement</th><th>Points</th></tr></thead>
+          <tbody>
+            <tr><td>You claimed 10 partner points in your SkillSelect EOI, <strong>and</strong> your partner is included in your state-nominated visa application, <strong>and</strong> your partner's occupation is a current priority industry occupation</td><td>50</td></tr>
+            <tr><td>You are single, have an Australian partner, or do not meet all the requirements above</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+    <details>
+      <summary>Annual earnings from current skilled employment in Victoria</summary>
+      <div class="ivpt-acc-body ivpt-tables">
+        <table>
+          <thead><tr><th>Earnings (AUD)</th><th>Points</th></tr></thead>
+          <tbody>
+            <tr><td>$80,000 – $84,999</td><td>8</td></tr><tr><td>$85,000 – $89,999</td><td>16</td></tr>
+            <tr><td>$90,000 – $94,999</td><td>24</td></tr><tr><td>$95,000 – $99,999</td><td>32</td></tr>
+            <tr><td>$100,000 – $104,999</td><td>39</td></tr><tr><td>$105,000 – $109,999</td><td>47</td></tr>
+            <tr><td>$110,000 – $114,999</td><td>55</td></tr><tr><td>$115,000 – $119,999</td><td>63</td></tr>
+            <tr><td>$120,000 – $124,999</td><td>71</td></tr><tr><td>$125,000 – $129,999</td><td>79</td></tr>
+          </tbody>
+        </table>
+        <table>
+          <thead><tr><th>Earnings (AUD)</th><th>Points</th></tr></thead>
+          <tbody>
+            <tr><td>$130,000 – $134,999</td><td>87</td></tr><tr><td>$135,000 – $139,999</td><td>95</td></tr>
+            <tr><td>$140,000 – $144,999</td><td>103</td></tr><tr><td>$145,000 – $149,999</td><td>111</td></tr>
+            <tr><td>$150,000 – $154,999</td><td>118</td></tr><tr><td>$155,000 – $159,999</td><td>126</td></tr>
+            <tr><td>$160,000 – $164,999</td><td>134</td></tr><tr><td>$165,000 – $169,999</td><td>142</td></tr>
+            <tr><td>$170,000 and over</td><td>150</td></tr><tr><td>Under $80,000</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+  </section>
+
+  <section class="ivpt-band">
+    <h2>2026–27 priority industries and occupations</h2>
+    <p>Victoria cut its priority list from seven sectors to four. Only the occupations listed below count. If your occupation isn't listed (for example ICT, accounting, or most engineering roles), you compete in the most competitive stream only.</p>
+    <table>
+      <thead><tr><th>Sector</th><th>2025–26</th><th>2026–27</th></tr></thead>
+      <tbody>
+        <tr><td>Health / Healthcare</td><td>Priority</td><td>Priority <span class="ivpt-tag">Kept</span></td></tr>
+        <tr><td>Social services / Social assistance</td><td>Priority</td><td>Priority <span class="ivpt-tag">Kept</span></td></tr>
+        <tr><td>Education (incl. early childhood)</td><td>Priority</td><td>Priority <span class="ivpt-tag">Kept</span></td></tr>
+        <tr><td>Construction</td><td>Priority</td><td>Priority <span class="ivpt-tag">Kept</span></td></tr>
+        <tr><td>New Energy</td><td>Priority</td><td>Not a priority <span class="ivpt-tag out">Dropped</span></td></tr>
+        <tr><td>Advanced manufacturing</td><td>Priority</td><td>Not a priority <span class="ivpt-tag out">Dropped</span></td></tr>
+        <tr><td>Hospitality and tourism (491)</td><td>Priority</td><td>Not a priority <span class="ivpt-tag out">Dropped</span></td></tr>
+      </tbody>
+    </table>
+
+    <details>
+      <summary>Healthcare (60 occupations)</summary>
+      <div class="ivpt-acc-body">
+        <h4>Allied health and imaging</h4>
+        <ul class="ivpt-codes">
+          <li>251211 Medical Diagnostic Radiographer</li><li>251212 Medical Radiation Therapist</li><li>251213 Nuclear Medicine Technologist</li>
+          <li>251214 Sonographer</li><li>251411 Optometrist</li><li>251511 Hospital Pharmacist</li><li>251912 Orthotist or Prosthetist</li>
+          <li>252411 Occupational Therapist</li><li>252511 Physiotherapist</li><li>252611 Podiatrist</li><li>252711 Audiologist</li>
+          <li>252712 Speech Pathologist</li><li>411213 Dental Technician</li>
+        </ul>
+        <h4>Medical specialists</h4>
+        <ul class="ivpt-codes">
+          <li>253311 Specialist Physician (General Medicine)</li><li>253312 Cardiologist</li><li>253313 Clinical Haematologist</li>
+          <li>253314 Medical Oncologist</li><li>253315 Endocrinologist</li><li>253316 Gastroenterologist</li>
+          <li>253317 Intensive Care Specialist</li><li>253318 Neurologist</li><li>253321 Paediatrician</li>
+          <li>253322 Renal Medicine Specialist</li><li>253323 Rheumatologist</li><li>253324 Thoracic Medicine Specialist</li>
+          <li>253399 Specialist Physicians nec</li><li>253411 Psychiatrist</li><li>253511 Surgeon</li><li>253512 Cardiothoracic Surgeon</li>
+          <li>253513 Neurosurgeon</li><li>253514 Orthopaedic Surgeon</li><li>253515 Otorhinolaryngologist</li>
+          <li>253516 Paediatric Surgeon</li><li>253517 Plastic and Reconstructive Surgeon</li><li>253518 Urologist</li>
+          <li>253521 Vascular Surgeon</li><li>253912 Emergency Medicine Specialist</li><li>253913 Obstetrician and Gynaecologist</li>
+          <li>253914 Ophthalmologist</li><li>253915 Pathologist</li><li>253917 Diagnostic and Interventional Radiologist</li>
+        </ul>
+        <h4>Nursing and midwifery</h4>
+        <ul class="ivpt-codes">
+          <li>254111 Midwife</li><li>254211 Nurse Educator</li><li>254212 Nurse Researcher</li><li>254311 Nurse Manager</li>
+          <li>254411 Nurse Practitioner</li><li>254412 Registered Nurse (Aged Care)</li><li>254413 Registered Nurse (Child and Family Health)</li>
+          <li>254414 Registered Nurse (Community Health)</li><li>254415 Registered Nurse (Critical Care and Emergency)</li>
+          <li>254416 Registered Nurse (Developmental Disability)</li><li>254417 Registered Nurse (Disability and Rehabilitation)</li>
+          <li>254418 Registered Nurse (Medical)</li><li>254421 Registered Nurse (Medical Practice)</li><li>254422 Registered Nurse (Mental Health)</li>
+          <li>254423 Registered Nurse (Perioperative)</li><li>254424 Registered Nurse (Surgical)</li><li>254425 Registered Nurse (Paediatrics)</li>
+          <li>254499 Registered Nurses nec</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>Social assistance (6 occupations)</summary>
+      <div class="ivpt-acc-body">
+        <ul class="ivpt-codes">
+          <li>272311 Clinical Psychologist</li><li>272312 Educational Psychologist</li><li>272313 Organisational Psychologist</li>
+          <li>272399 Psychologists nec</li><li>272511 Social Worker</li><li>272613 Welfare Worker</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>Education (5 occupations)</summary>
+      <div class="ivpt-acc-body">
+        <h4>Teachers subgroup</h4>
+        <ul class="ivpt-codes">
+          <li>241311 Middle School Teacher</li><li>241411 Secondary School Teacher</li><li>241511 Special Needs Teacher</li>
+          <li>241599 Special Education Teachers nec</li>
+        </ul>
+        <h4>Early Childhood subgroup</h4>
+        <ul class="ivpt-codes"><li>241111 Early Childhood (Pre-primary School) Teacher</li></ul>
+        <p style="font-size:13px;margin-top:8px">Early childhood teachers with at least 1 year of relevant experience and Proficient or Superior English are prioritised.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Construction (31 occupations)</summary>
+      <div class="ivpt-acc-body">
+        <h4>Construction Professionals subgroup</h4>
+        <ul class="ivpt-codes">
+          <li>133111 Construction Project Manager</li><li>232212 Surveyor</li><li>232214 Other Spatial Scientist</li>
+          <li>233212 Geotechnical Engineer</li><li>234412 Geophysicist</li><li>234413 Hydrogeologist</li>
+        </ul>
+        <h4>Construction Trades subgroup</h4>
+        <ul class="ivpt-codes">
+          <li>312113 Building Inspector</li><li>312312 Electrical Engineering Technician</li><li>321111 Automotive Electrician</li>
+          <li>321211 Motor Mechanic (General)</li><li>322211 Sheet Metal Worker</li><li>322311 Metal Fabricator</li>
+          <li>323214 Metal Machinist</li><li>323412 Toolmaker</li><li>331111 Bricklayer</li><li>331112 Stonemason</li>
+          <li>331211 Carpenter and Joiner</li><li>331212 Carpenter</li><li>331213 Joiner</li><li>333111 Glazier</li>
+          <li>333212 Solid Plasterer</li><li>333311 Roof Tiler</li><li>333411 Wall and Floor Tiler</li><li>334111 Plumber (General)</li>
+          <li>334112 Airconditioning and Mechanical Services Plumber</li><li>334113 Drainer</li><li>334114 Gasfitter</li>
+          <li>334115 Roof Plumber</li><li>341111 Electrician (General)</li><li>341112 Electrician (Special Class)</li>
+          <li>342111 Airconditioning and Refrigeration Mechanic</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <section style="margin-top:48px">
+    <h2>What's not confirmed yet</h2>
+    <p>The points test and fees are confirmed. As at 13 October 2026, Victoria has not yet published:</p>
+    <ul>
+      <li>The 2026–27 program opening date.</li>
+      <li>Victoria's 2026–27 nomination allocation. For reference, 2025–26 was 3,400 places, of which 2,700 were for the 190.</li>
+      <li>Full 2026–27 eligibility criteria, including residence, minimum English and offshore 491 rules.</li>
+    </ul>
+    <p>Victoria's experience table also jumps from "3–5 years" to "6–8 years" without saying how 5 to 6 years is scored. Talk to us if this applies to you.</p>
+  </section>
+
+  <!-- 6. FINAL CTA -->
+  <section class="ivpt-band">
+    <h2>Get ready before the program opens</h2>
+    <ul class="ivpt-checklist">
+      <li>Work out your VPT score with the checker above.</li>
+      <li>If your English is Competent or Proficient, consider re-testing. It is the biggest gain most applicants can make.</li>
+      <li>Check whether your occupation is on the 2026–27 priority list.</li>
+      <li>If you claim partner points, check your partner's occupation is on the priority list.</li>
+      <li>If you work in Victoria, calculate your annual earnings and keep evidence ready.</li>
+      <li>Make sure your SkillSelect EOI is accurate and up to date. The VPT draws on it.</li>
+      <li>Budget $66 for the ROI and $198 for the nomination if invited (GST-inclusive, paying from Australia).</li>
+      <li>Lodge a new ROI as soon as the program opens. Old ROIs will not be considered.</li>
+    </ul>
+    <div class="ivpt-cta-row">
+      <a class="ivpt-btn" href="#ivpt-quiz-card">Check my score <span class="arr">&#8594;</span></a>
+      <a class="ivpt-btn ghost" href="https://interlace.com.au/book-an-appointment">Book An Appointment</a>
+    </div>
+  </section>
+
+  <section style="margin-top:40px">
+    <h3>Official sources</h3>
+    <ul class="ivpt-sources">
+      <li><a href="https://liveinmelbourne.vic.gov.au/news-events/news/2026/update-victorias-skilled-visa-nomination-program-2026-27" target="_blank" rel="noopener">Update – Victoria's skilled visa nomination program 2026–27</a> (Live in Melbourne, 13 October 2026)</li>
+      <li><a href="https://liveinmelbourne.vic.gov.au/migrate/skilled-migration-visas/vpt" target="_blank" rel="noopener">Victorian Points Test</a> (Live in Melbourne)</li>
+      <li><a href="https://liveinmelbourne.vic.gov.au/migrate/skilled-migration-visas/fees" target="_blank" rel="noopener">Fees</a> (Live in Melbourne)</li>
+    </ul>
+  </section>
+
+  <p class="ivpt-disclaimer">This checker gives an estimate only, based on the Victorian Points Test tables published by the Victorian Government on <a href="https://liveinmelbourne.vic.gov.au/migrate/skilled-migration-visas/vpt" target="_blank" rel="noopener">Live in Melbourne</a> (13 October 2026). It is general information, not migration advice. Victoria does not publish invitation cut-offs, and an invitation or nomination is not guaranteed. Eligibility criteria for the 2026–27 program will be published by Victoria when the program opens. Speak with a registered migration agent before lodging.</p>
+</div>
+
+<script>
+(function(){
+  var root = document.getElementById('ivpt');
+  if (!root) return;
+
+  /* ---- Funnel settings ---- */
+  var LEAD_ENDPOINT = '/wp-json/interlace/v1/vpt-lead';   // Interlace VPT Leads plugin (emails sales@ via Resend)
+  var WHATSAPP      = '61481697403';                       // Interlace WhatsApp, no + or spaces
+
+  /* Analytics: GA4/GTM dataLayer + Meta pixel, if present on the site. */
+  function track(name, data){
+    try { (window.dataLayer = window.dataLayer || []).push(Object.assign({event: name}, data || {})); } catch(e){}
+    try { if (typeof window.fbq === 'function'){
+      if (name === 'ivpt_lead') window.fbq('track', 'Lead', data || {});
+      else if (name === 'ivpt_whatsapp') window.fbq('track', 'Contact', data || {});
+      else window.fbq('trackCustom', name, data || {});
+    } } catch(e){}
+  }
+
+  /* ---- Victorian Points Test data (Live in Melbourne, 13 Oct 2026) ---- */
+  var AGE = {18:265,19:282,20:300,21:300,22:300,23:300,24:300,25:300,26:300,27:300,28:300,29:300,
+             30:286,31:270,32:256,33:240,34:226,35:210,36:196,37:180,38:166,39:150,40:136,41:106,42:76,43:46,44:16};
+  var EARN = [
+    ['Under $80,000',0],['$80,000 – $84,999',8],['$85,000 – $89,999',16],['$90,000 – $94,999',24],['$95,000 – $99,999',32],
+    ['$100,000 – $104,999',39],['$105,000 – $109,999',47],['$110,000 – $114,999',55],['$115,000 – $119,999',63],
+    ['$120,000 – $124,999',71],['$125,000 – $129,999',79],['$130,000 – $134,999',87],['$135,000 – $139,999',95],
+    ['$140,000 – $144,999',103],['$145,000 – $149,999',111],['$150,000 – $154,999',118],['$155,000 – $159,999',126],
+    ['$160,000 – $164,999',134],['$165,000 – $169,999',142],['$170,000 and over',150]
+  ];
+
+  var ageOpts = [{v:'', label:'Select your age', pts:0}];
+  for (var a = 18; a <= 44; a++) ageOpts.push({v:String(a), label:a + ' years', pts:AGE[a]});
+  ageOpts.push({v:'45', label:'45 years or older', pts:0});
+
+  var earnOpts = [{v:'', label:'Select your annual earnings', pts:0},
+                  {v:'none', label:'Not living and working in skilled employment in Victoria', pts:0}];
+  EARN.forEach(function(e, i){ earnOpts.push({v:'e' + i, label:e[0], pts:e[1]}); });
+
+  var STEPS = [
+    {key:'visa', name:'Visa', max:0, q:'Which visa are you seeking Victorian nomination for?',
+     help:'Let’s start with the easy one.',
+     options:[
+       {v:'190', label:'Skilled Nominated visa (subclass 190)', desc:'Permanent visa. Victorian nomination adds 5 points to your SkillSelect score.', pts:0},
+       {v:'491', label:'Skilled Work Regional (Provisional) visa (subclass 491)', desc:'5-year provisional visa to live and work in regional Victoria. Nomination adds 15 points to your SkillSelect score.', pts:0}
+     ]},
+    {key:'age', name:'Age', max:300, q:'How old are you?', type:'select', options:ageOpts,
+     help:'Age is the most heavily weighted factor in Victoria’s test.'},
+    {key:'eng', name:'English', max:200, q:'What is your English language level?',
+     help:'Scores below apply to tests taken on or after 7 August 2025.',
+     options:[
+       {v:'c', label:'Competent English', pts:0, desc:'<ul><li>IELTS 6.0+ in each component, or</li><li>PTE Academic: 54 Speaking, 47 Listening, 48 Reading, 51 Writing, or</li><li>Passport from UK, USA, Ireland, Canada or NZ</li></ul>'},
+       {v:'p', label:'Proficient English', pts:100, desc:'<ul><li>IELTS 7.0+ in each component, or</li><li>PTE Academic: 76 Speaking, 58 Listening, 59 Reading, 69 Writing, or</li><li>OET B in each component</li></ul>'},
+       {v:'s', label:'Superior English', pts:200, desc:'<ul><li>IELTS 8.0+ in each component, or</li><li>PTE Academic: 88 Speaking, 69 Listening, 70 Reading, 85 Writing, or</li><li>OET A in each component</li></ul>'}
+     ]},
+    {key:'exp', name:'Experience', max:100, q:'How many years of experience do you have in your nominated occupation?',
+     help:'Bands as published by Victoria.', cols:2,
+     options:[
+       {v:'0', label:'0 years', pts:0},{v:'1', label:'1 year', pts:20},
+       {v:'1-3', label:'1–3 years', pts:40},{v:'3-5', label:'3–5 years', pts:60},
+       {v:'6-8', label:'6–8 years', pts:80},{v:'8+', label:'More than 8 years', pts:100}
+     ],
+     note:'Victoria’s table does not show a band between 5 and 6 years. If this applies to you, talk to us before lodging your ROI.'},
+    {key:'edu', name:'Education', max:100, q:'What is your highest qualification?', cols:2,
+     options:[
+       {v:'o', label:'Other (e.g. diploma or trade qualification)', pts:25},
+       {v:'b', label:'Bachelor or Honours degree', pts:50},
+       {v:'m', label:'Masters degree', pts:75},
+       {v:'d', label:'PhD (Doctorate)', pts:100}
+     ]},
+    {key:'skill', name:'Skill level', max:50, q:'What is the ANZSCO skill level of your nominated occupation?',
+     options:[
+       {v:'1', label:'Skill level 1', desc:'Usually degree-level professional occupations, for example nurses, engineers, accountants, teachers and ICT professionals.', pts:50},
+       {v:'23', label:'Skill level 2 or 3', desc:'Usually technician and trade occupations.', pts:0},
+       {v:'ns', label:'Not sure', desc:'No problem. We’ll show you what it could be worth.', pts:0}
+     ]},
+    {key:'ind', name:'Industry', max:0, q:'Is your nominated occupation in one of Victoria’s 2026–27 priority industries?',
+     help:'Priority occupations also get their own invitation stream. Only specific occupations in each industry count.',
+     cols:2,
+     options:[
+       {v:'health', label:'Healthcare', desc:'e.g. registered nurses, midwives, allied health, medical specialists', pts:0},
+       {v:'social', label:'Social assistance', desc:'e.g. psychologists, social workers, welfare workers', pts:0},
+       {v:'edu', label:'Education – Teachers', desc:'Secondary, middle school, special needs and special education teachers', pts:0},
+       {v:'ece', label:'Education – Early Childhood', desc:'Early Childhood (Pre-primary School) Teacher', pts:0},
+       {v:'cons', label:'Construction', desc:'e.g. construction project managers, surveyors, electricians, plumbers, carpenters, motor mechanics', pts:0},
+       {v:'none', label:'None of these / not sure', desc:'e.g. ICT, accounting and most engineering occupations are not on the list', pts:0}
+     ]},
+    {key:'partner', name:'Partner', max:50, q:'Which best describes your partner situation?',
+     options:[
+       {v:'single', label:'I am single, or my partner is an Australian citizen or permanent resident', pts:0},
+       {v:'yes', label:'My partner qualifies for 10 partner points, will be included in my visa application, AND their occupation is on Victoria’s priority list', pts:50},
+       {v:'nopri', label:'My partner qualifies for 10 partner points, but their occupation is NOT on Victoria’s priority list', pts:0},
+       {v:'no', label:'My partner does not qualify for partner skill points', pts:0}
+     ]},
+    {key:'earn', name:'Earnings', max:150, q:'Last one: what are your annual earnings from your current skilled employment in Victoria?',
+     type:'select', options:earnOpts,
+     help:'Only earnings from current skilled employment in Victoria count. If you live overseas or interstate, choose “Not living and working in skilled employment in Victoria”.'}
+  ];
+  var GATE = STEPS.length;            // step index of the "result is ready" gate
+  var TOTAL_STEPS = STEPS.length + 1;
+
+  var answers = {}, idx = 0, unlocked = false, contact = null, started = false;
+
+  var el = function(id){ return document.getElementById(id); };
+  var stepBox = el('ivpt-step'), prev = el('ivpt-prev'), next = el('ivpt-next');
+  var esc = function(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); };
+
+  function optFor(step){
+    var v = answers[step.key];
+    for (var i = 0; i < step.options.length; i++) if (step.options[i].v === v) return step.options[i];
+    return null;
+  }
+  function ptsFor(step){ var o = optFor(step); return o ? o.pts : 0; }
+  function total(){ return STEPS.reduce(function(s, st){ return s + ptsFor(st); }, 0); }
+  function label(key){
+    var st = STEPS.filter(function(s){ return s.key === key; })[0];
+    var o = st && optFor(st);
+    return o ? o.label : '';
+  }
+  function shortLabel(st){
+    var o = optFor(st); if (!o) return '—';
+    if (st.key === 'visa') return 'Subclass ' + o.v;
+    if (st.key === 'partner') return {single:'Single / Aus. partner', yes:'Priority occupation', nopri:'Not priority', no:'Doesn’t qualify'}[o.v];
+    if (st.key === 'earn' && o.v === 'none') return 'Not in Victoria';
+    return o.label.replace(' English','').replace(' degree','');
+  }
+  function isPriority(){ return answers.ind && answers.ind !== 'none'; }
+
+  /* Points the person could still realistically add (the "gap" that sells the consultation). */
+  function gains(){
+    var g = [];
+    if (answers.eng === 'c') g.push([200, 'Reach Superior English (e.g. PTE 88 S / 69 L / 70 R / 85 W). Proficient alone adds 100.']);
+    else if (answers.eng === 'p') g.push([100, 'Move from Proficient to Superior English.']);
+    if (answers.earn === 'none' || answers.earn === 'e0') g.push([150, 'Skilled employment in Victoria paying $80,000+ scores 8 to 150 points.']);
+    else if (/^e\d+$/.test(answers.earn || '')){
+      var cur = EARN[+answers.earn.slice(1)][1];
+      if (cur < 150) g.push([150 - cur, 'Higher Victorian earnings, up to 150 points at $170,000+.']);
+    }
+    if (answers.skill === 'ns') g.push([50, 'If your occupation is ANZSCO skill level 1. We can confirm this for you.']);
+    if (answers.partner === 'no') g.push([50, 'If your partner gets a positive skills assessment in a priority occupation.']);
+    var expNext = {'0':20,'1':20,'1-3':20,'3-5':20,'6-8':20};
+    if (expNext[answers.exp]) g.push([expNext[answers.exp], 'Moving into the next experience band as you keep working in your occupation.']);
+    return g;
+  }
+
+  function strongest(){
+    var best = null, bestRatio = -1;
+    STEPS.forEach(function(st){ if (st.max){ var r = ptsFor(st) / st.max; if (r > bestRatio){ bestRatio = r; best = st.name; } } });
+    return best;
+  }
+
+  /* ---- Side panel ---- */
+  function renderSide(){
+    var rows = '';
+    STEPS.forEach(function(st){
+      var done = !!answers[st.key];
+      var right = done ? esc(shortLabel(st)) : 'To do';
+      if (unlocked && st.max) right += ' · <b style="color:#3267AD">' + ptsFor(st) + '</b>';
+      rows += '<li class="' + (done ? 'done' : '') + '"><span>' + st.name + '</span><span>' + right + '</span></li>';
+    });
+    el('ivpt-rows').innerHTML = rows;
+    var box = el('ivpt-lockbox');
+    if (unlocked){
+      box.classList.add('is-open');
+      el('ivpt-side-score').textContent = total() + ' / 950';
+      el('ivpt-side-sub').textContent = 'Your estimated VPT score';
+    } else {
+      box.classList.remove('is-open');
+      var n = STEPS.filter(function(s){ return answers[s.key]; }).length;
+      el('ivpt-side-score').textContent = 'Score locked';
+      el('ivpt-side-sub').textContent = n === STEPS.length ? 'Ready to reveal' : (STEPS.length - n) + ' questions to go';
+    }
+  }
+
+  /* ---- Steps ---- */
+  function renderStep(){
+    el('ivpt-step-count').textContent = 'Step ' + (idx + 1) + ' of ' + TOTAL_STEPS;
+    el('ivpt-progress').style.width = ((idx + 1) / TOTAL_STEPS * 100) + '%';
+    prev.style.visibility = idx === 0 ? 'hidden' : 'visible';
+
+    if (idx === GATE){ renderGate(); return; }
+
+    var st = STEPS[idx];
+    el('ivpt-step-name').textContent = st.name;
+    next.style.display = '';
+    var h = '<p class="ivpt-q">' + st.q + '</p>';
+    if (st.help) h += '<p class="ivpt-help">' + st.help + '</p>';
+
+    if (st.type === 'select'){
+      h += '<select id="ivpt-select" aria-label="' + st.name + '">';
+      st.options.forEach(function(o){
+        h += '<option value="' + o.v + '"' + (answers[st.key] === o.v ? ' selected' : '') + '>' + o.label + '</option>';
+      });
+      h += '</select>';
+    } else {
+      h += '<div class="ivpt-options' + (st.cols === 2 ? ' cols-2' : '') + '" role="radiogroup" aria-label="' + st.name + '">';
+      st.options.forEach(function(o){
+        var on = answers[st.key] === o.v;
+        h += '<button type="button" class="ivpt-opt' + (on ? ' is-on' : '') + '" role="radio" aria-checked="' + on + '" data-v="' + o.v + '">' +
+             '<span class="ivpt-opt-top">' + o.label + '</span>' +
+             (o.desc ? '<span class="ivpt-opt-desc">' + o.desc + '</span>' : '') + '</button>';
+      });
+      h += '</div>';
+    }
+    if (st.key === 'age' && answers.age === '45') h += '<div class="ivpt-note">Applicants must be under 45 at the time of invitation to be eligible for the 190 or 491 visa.</div>';
+    if (st.note) h += '<div class="ivpt-note">' + st.note + '</div>';
+    stepBox.innerHTML = h;
+
+    next.innerHTML = (idx === STEPS.length - 1 ? 'See my result' : 'Next') + ' <span class="arr">&#8594;</span>';
+    next.disabled = !answers[st.key];
+
+    if (st.type === 'select'){
+      el('ivpt-select').addEventListener('change', function(e){
+        if (e.target.value) answers[st.key] = e.target.value; else delete answers[st.key];
+        next.disabled = !answers[st.key];
+        renderSide();
+        if (st.key === 'age') renderStep();
+      });
+    } else {
+      stepBox.querySelectorAll('.ivpt-opt').forEach(function(b){
+        b.addEventListener('click', function(){
+          answers[st.key] = b.getAttribute('data-v');
+          renderStep(); renderSide();
+          // Auto-advance on single-choice questions keeps momentum (fewer clicks = fewer drop-offs).
+          setTimeout(function(){ if (idx < GATE && STEPS[idx] === st) goNext(); }, 260);
+        });
+      });
+    }
+  }
+
+  /* ---- Gate: "your result is ready" ---- */
+  function renderGate(){
+    el('ivpt-step-name').textContent = 'Your result';
+    next.style.display = 'none';
+    var g = gains();
+    var bullets = [];
+    bullets.push(g.length ? 'We found <strong>' + g.length + ' way' + (g.length > 1 ? 's' : '') + '</strong> you could add points' : 'You’re already strong on every factor you can change');
+    bullets.push(isPriority() ? 'You may be considered in the <strong>' + esc(label('ind')) + '</strong> priority stream' : 'You’ll compete in the <strong>most competitive</strong> stream');
+    bullets.push('Your strongest factor: <strong>' + esc(strongest()) + '</strong>');
+
+    var h = '<p class="ivpt-q">Your result is ready</p>' +
+      '<p class="ivpt-help">Enter your details to unlock your score, see your full breakdown, and find out how to lift your ranking.</p>' +
+      '<div class="ivpt-locked"><div class="ivpt-locked-score"><span class="ivpt-blur" aria-hidden="true">888</span><small>/ 950</small></div>' +
+      '<ul>' + bullets.map(function(b){ return '<li>' + b + '</li>'; }).join('') + '</ul></div>' +
+      '<form id="ivpt-gate" novalidate>' +
+        '<div class="ivpt-fields">' +
+          '<label><span>First name</span><input type="text" name="first_name" autocomplete="given-name" required></label>' +
+          '<label><span>Mobile / WhatsApp</span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" placeholder="+61 4xx xxx xxx" required></label>' +
+          '<label class="full"><span>Email <em>(optional, to get your full report by email)</em></span><input type="email" name="email" autocomplete="email"></label>' +
+        '</div>' +
+        '<label class="ivpt-check"><input type="checkbox" name="notify" value="1"> Tell me the day Victoria’s 2026–27 program opens</label>' +
+        '<input type="text" name="website" class="ivpt-hp" tabindex="-1" autocomplete="off" aria-hidden="true">' +
+        '<button type="submit" class="ivpt-btn big ivpt-gate-btn">Show my score <span class="arr">&#8594;</span></button>' +
+        '<p class="ivpt-consent">By continuing, you agree that Interlace Studies may contact you about your visa options by phone, SMS, WhatsApp or email. You can opt out at any time. See our <a href="https://interlace.com.au/privacy-policy/" target="_blank" rel="noopener">Privacy Policy</a>.</p>' +
+        '<p class="ivpt-form-msg" id="ivpt-gate-msg" role="status"></p>' +
+      '</form>' +
+      '<p class="ivpt-alt">Prefer not to share your details? <a id="ivpt-gate-wa" href="' + waLink(false) + '" target="_blank" rel="noopener">Ask us on WhatsApp instead</a></p>';
+    stepBox.innerHTML = h;
+
+    track('ivpt_gate_view', {vpt_industry: answers.ind});
+    el('ivpt-gate').addEventListener('submit', function(e){ e.preventDefault(); submitGate(this); });
+    el('ivpt-gate-wa').addEventListener('click', function(){ track('ivpt_whatsapp', {where: 'gate'}); });
+    var first = el('ivpt-gate').querySelector('[name=first_name]');
+    if (first && window.matchMedia && window.matchMedia('(min-width:961px)').matches) first.focus();
+  }
+
+  function setMsg(text, ok){
+    var m = el('ivpt-gate-msg'); if (!m) return;
+    m.textContent = text; m.className = 'ivpt-form-msg ' + (ok ? 'ok' : 'err');
+  }
+
+  function postLead(data){
+    return fetch(LEAD_ENDPOINT, {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data), credentials: 'same-origin'
+    }).then(function(r){
+      return r.json().catch(function(){ return {}; }).then(function(j){ return {status: r.status, ok: r.ok && j.ok, j: j}; });
+    });
+  }
+
+  function submitGate(form){
+    var fld = function(n){ return form.querySelector('[name="' + n + '"]'); };
+    var val = function(n){ var f = fld(n); return f ? f.value.trim() : ''; };
+    var data = {
+      type: 'unlock', first_name: val('first_name'), phone: val('phone'), email: val('email'),
+      notify: !!(fld('notify') && fld('notify').checked), website: val('website'),
+      answers: answers, page: location.href
+    };
+
+    var badName = null, badMsg = '';
+    if (!data.first_name){ badName = 'first_name'; badMsg = 'Please enter your first name.'; }
+    else if (!/^\+?[0-9 ()\-]{8,20}$/.test(data.phone)){ badName = 'phone'; badMsg = 'Please enter a valid mobile number, including country code.'; }
+    else if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)){ badName = 'email'; badMsg = 'Please check your email, or leave it blank.'; }
+    form.querySelectorAll('input').forEach(function(i){ i.classList.remove('is-bad'); });
+    if (badName){
+      var bf = fld(badName); if (bf){ bf.classList.add('is-bad'); bf.focus(); }
+      setMsg(badMsg, false); return;
+    }
+
+    var btn = form.querySelector('button[type=submit]');
+    btn.setAttribute('aria-busy', 'true');
+    setMsg('Unlocking your result…', true);
+
+    postLead(data).then(function(res){
+      if (res.ok || res.status === 429){
+        contact = data; track('ivpt_lead', {lead_type: 'unlock', vpt_score: total(), vpt_industry: answers.ind});
+        reveal(true);
+      } else if (res.status >= 400 && res.status < 500){
+        btn.removeAttribute('aria-busy');
+        setMsg((res.j && res.j.message) || 'Please check your details and try again.', false);
+      } else { throw new Error('server'); }
+    }).catch(function(){
+      // Never punish the visitor for our outage: show the result and push WhatsApp so the lead isn't lost.
+      contact = data; track('ivpt_lead_error', {vpt_score: total()});
+      reveal(false);
+    });
+  }
+
+  /* Pre-written WhatsApp message carrying the key answers (and the score once unlocked). */
+  function waLink(withScore){
+    var age = answers.age === '45' ? '45+' : answers.age;
+    var lines = [
+      'Hi Interlace, I used your Victorian Points Test checker.',
+      withScore ? 'My estimated VPT score is ' + total() + '/950.' : 'Can you tell me my score and my chances?',
+      'Visa: ' + answers.visa + ' | Age: ' + age + ' | English: ' + label('eng') +
+        ' | Experience: ' + label('exp') + ' | Education: ' + label('edu'),
+      'Priority industry: ' + label('ind') + ' | Victorian earnings: ' + label('earn')
+    ];
+    if (withScore) lines.push('Can you check my chances of Victorian nomination?');
+    return 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(lines.join('\n'));
+  }
+
+  /* ---- Reveal ---- */
+  function reveal(saved){
+    unlocked = true;
+    el('ivpt-quiz').style.display = 'none';
+    el('ivpt-result').classList.add('is-on');
+
+    var name = contact && contact.first_name ? contact.first_name : '';
+    el('ivpt-res-hello').textContent = name ? name + ', your estimated score is' : 'Your estimated score is';
+    el('ivpt-res-total').textContent = total();
+
+    var conf = el('ivpt-confirm');
+    if (saved){
+      conf.style.display = '';
+      conf.innerHTML = 'A registered migration agent will be in touch on <strong>' + esc(contact.phone) + '</strong> to talk through your result.' +
+        (contact.email ? ' We’ve also emailed your full report to <strong>' + esc(contact.email) + '</strong>.' : '');
+    } else {
+      conf.style.display = '';
+      conf.innerHTML = 'We couldn’t save your details just now. Message us on WhatsApp below and an agent will reply.';
+    }
+
+    var g = gains();
+    el('ivpt-gains').innerHTML = g.length
+      ? g.map(function(x){ return '<li><b>+' + x[0] + '</b><span>' + esc(x[1]) + '</span></li>'; }).join('')
+      : '<li><b>✓</b><span>You’re already at the top band for every factor you can change. Timing and a correct ROI are what matter now.</span></li>';
+
+    el('ivpt-bd').innerHTML = STEPS.filter(function(st){ return st.max; }).map(function(st){
+      var p = ptsFor(st);
+      return '<li><div class="ivpt-bd-top"><span>' + st.name + ' <small>· ' + esc(shortLabel(st)) + '</small></span><b>' + p + ' / ' + st.max + '</b></div>' +
+             '<div class="ivpt-bar"><span style="width:' + (p / st.max * 100) + '%"></span></div></li>';
+    }).join('');
+
+    el('ivpt-tips').innerHTML = tips().map(function(x){ return '<li>' + x + '</li>'; }).join('');
+    el('ivpt-wa').href = waLink(true);
+    renderSide();
+    track('ivpt_reveal', {vpt_score: total(), saved: saved});
+    el('ivpt-result').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function tips(){
+    var t = [], age = parseInt(answers.age, 10);
+    var nomPts = answers.visa === '491' ? 15 : 5;
+    if (age >= 45) t.push('You must be under 45 to be invited for a 190 or 491 visa, so you are not currently eligible for this pathway. Other visas may still suit you.');
+    else if (age >= 40) t.push('From age 40 you lose about 30 age points each year, so lodging your ROI as soon as the program opens matters.');
+    if (answers.ind === 'ece'){
+      if ((answers.eng === 'p' || answers.eng === 's') && answers.exp !== '0') t.push('Victoria prioritises early childhood teachers with at least 1 year of relevant experience and Proficient or Superior English, and you appear to meet both.');
+      else t.push('Victoria prioritises early childhood teachers with at least 1 year of relevant experience and Proficient or Superior English. Meeting both would strengthen your ROI.');
+    }
+    if (isPriority()) t.push('You may be considered in the priority industry stream as well as the most competitive stream, where you compete only with other applicants in that industry.');
+    else t.push('Without a priority occupation you compete in the most competitive stream, against all eligible occupations. Every extra point counts.');
+    if (answers.partner === 'nopri') t.push('Your partner still adds 10 points on the Australian points test, but receives no VPT points because their occupation is not on Victoria’s priority list.');
+    t.push('You also need at least 65 points on the Australian Government points test, including ' + nomPts + ' nomination points for the ' + (answers.visa || '190') + ' visa.');
+    t.push('Victoria’s 2026–27 program has not opened yet. When it does, you will need to lodge a new ROI ($60 + GST), even if you lodged one before.');
+    return t;
+  }
+
+  /* ---- Navigation ---- */
+  function goNext(){
+    if (idx >= GATE || !answers[STEPS[idx].key]) return;
+    if (!started){ started = true; track('ivpt_start'); }
+    track('ivpt_step', {step: idx + 1, step_name: STEPS[idx].key});
+    idx++;
+    if (idx === GATE && unlocked && contact){
+      // Already gave details this visit: don't ask twice. Update sales silently and reveal.
+      postLead(Object.assign({}, contact, {answers: answers, page: location.href})).catch(function(){});
+      reveal(true); return;
+    }
+    renderStep();
+  }
+
+  next.addEventListener('click', goNext);
+  prev.addEventListener('click', function(){ if (idx > 0){ idx--; renderStep(); } });
+  el('ivpt-wa').addEventListener('click', function(){ track('ivpt_whatsapp', {where: 'result', vpt_score: total()}); });
+  el('ivpt-book').addEventListener('click', function(){ track('ivpt_book', {vpt_score: total()}); });
+  el('ivpt-restart').addEventListener('click', function(){
+    answers = {}; idx = 0;
+    el('ivpt-result').classList.remove('is-on');
+    el('ivpt-quiz').style.display = '';
+    renderStep(); renderSide();
+    el('ivpt-quiz-card').scrollIntoView({behavior:'smooth', block:'start'});
+  });
+  var heroCta = el('ivpt-hero-cta');
+  if (heroCta) heroCta.addEventListener('click', function(){ track('ivpt_hero_click'); });
+
+  renderStep(); renderSide();
+})();
+</script>
