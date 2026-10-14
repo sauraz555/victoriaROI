@@ -44,10 +44,40 @@ If the lead endpoint is down, the visitor still sees their score and is pushed t
 
 ## Lead email to sales
 
-- Subject: `VPT lead: <name> – <score>/950 (<request type>)`, with a 🔥 prefix for priority leads.
-- **Priority lead** means: under 45, and either a score of 600+ or onshore in a priority industry.
-- The score is recalculated on the server, so the browser can't send a fake score.
-- Tags for CRM routing: `vpt-checker`, a score band (`vpt-700plus`, `vpt-550-699`, `vpt-400-549`, `vpt-under-400`), `vic-priority-<industry>` or `vic-non-priority`, `vic-onshore` or `vic-offshore-or-interstate`, `visa-190`/`visa-491`, `vic-opening-alert`, `age-ineligible`.
+Every email is clearly labelled as coming from the **Victorian ROI form**: in the subject, the header bar and the first line.
+
+**Subject:** `[Victorian ROI Form] 🔥 Ram · 622/950 · Healthcare · In Victoria · Returning`
+(🔥 = hot lead; location comes from the visitor's time zone, otherwise their phone's country code.)
+
+**Email sections, in order:**
+
+1. **At a glance:** score, lead grade, visa, age, English, industry and Victorian earnings.
+2. **Contact:** one-tap Call, WhatsApp (with a greeting already written) and Email buttons; phone country; the lead's local time and whether it's a good time to call; opening-alert opt-in.
+3. **Suggested talking points:** priority stream, biggest point gain, partner and age issues, the 65-point federal check, and services that fit (for example PTE coaching or skills assessment).
+4. **Points they could still gain:** exactly what the visitor saw on the page.
+5. **Their answers and points:** the full breakdown.
+6. **How they found us:** traffic source (UTM campaign, Facebook/Google ad, Google search, referral or direct), device and app, browser language, time spent on the checker, number of visits, page, time received and a lead reference such as `VIC-261014-550D`.
+
+**Lead grades**
+
+| Grade | Rule |
+| --- | --- |
+| HOT – call today | Under 45, and a score of 600+ or working in Victoria in a priority industry |
+| WARM – call within 24h | Score 450+, or a priority industry |
+| NURTURE | Everyone else under 45 |
+| Not eligible (45+) | Age 45 or over; offer other pathways |
+
+**Returning lead:** if the same phone or email used the checker in the last 90 days, the email says so and gives the last date.
+
+All of this is collected in the background. The visitor only ever types their name, mobile and (optionally) email. The score is recalculated on the server, so the browser can't send a fake score.
+
+**CRM tags:** `vpt-checker`, `victorian-roi-form`, a score band (`vpt-700plus`, `vpt-550-699`, `vpt-400-549`, `vpt-under-400`), `vic-priority-<industry>` or `vic-non-priority`, `vic-working-in-vic` or `vic-not-working-in-vic`, `visa-190`/`visa-491`, `vic-opening-alert`, `returning-lead`, `hot-lead`, `age-ineligible`. The same fields, plus UTM values, go to GoHighLevel if the webhook is set.
+
+### Tracking ad campaigns
+
+Add UTM tags to every ad link so the source shows in the email, for example:
+`https://interlace.com.au/victorian-points-test/?utm_source=facebook&utm_medium=paid&utm_campaign=vic-vpt-launch`
+Facebook, Google, Microsoft and TikTok ad clicks are recognised even without UTMs. The first source is remembered for 30 days, so a visitor who clicks an ad and comes back later is still credited to that ad.
 
 ## Spam protection
 

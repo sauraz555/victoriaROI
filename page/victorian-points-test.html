@@ -615,6 +615,45 @@
     } } catch(e){}
   }
 
+  /* ---- Background context for the sales team (nothing the visitor types) ----
+     First-touch attribution (UTM / ad click / referrer) is kept for 30 days so a visitor
+     who clicks an ad today and returns tomorrow is still credited to that ad. */
+  var store = {
+    get: function(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } },
+    set: function(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+  };
+  var attr = (function(){
+    var q = {};
+    try { new URLSearchParams(location.search).forEach(function(v, k){ q[k] = v; }); } catch(e){}
+    var fresh = {
+      utm_source: q.utm_source || '', utm_medium: q.utm_medium || '', utm_campaign: q.utm_campaign || '',
+      utm_term: q.utm_term || '', utm_content: q.utm_content || '',
+      click_id: q.gclid ? 'gclid' : (q.fbclid ? 'fbclid' : (q.msclkid ? 'msclkid' : (q.ttclid ? 'ttclid' : ''))),
+      referrer: document.referrer && document.referrer.indexOf(location.host) === -1 ? document.referrer : '',
+      landing: location.pathname + location.search, at: Date.now()
+    };
+    var saved = store.get('ivpt_attr');
+    var hasNew = fresh.utm_source || fresh.click_id;
+    if (hasNew || !saved || Date.now() - (saved.at || 0) > 30 * 864e5){ store.set('ivpt_attr', fresh); return fresh; }
+    return saved;
+  })();
+  var visits = (store.get('ivpt_visits') || 0) + 1;
+  store.set('ivpt_visits', visits);
+  var startedAt = 0;
+
+  function meta(){
+    var tz = '';
+    try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch(e){}
+    return {
+      tz: tz, lang: navigator.language || '', visits: visits,
+      seconds: startedAt ? Math.round((Date.now() - startedAt) / 1000) : 0,
+      screen: (window.screen ? screen.width + 'x' + screen.height : ''),
+      referrer: attr.referrer, landing: attr.landing, click_id: attr.click_id,
+      utm_source: attr.utm_source, utm_medium: attr.utm_medium, utm_campaign: attr.utm_campaign,
+      utm_term: attr.utm_term, utm_content: attr.utm_content
+    };
+  }
+
   /* ---- Victorian Points Test data (Live in Melbourne, 13 Oct 2026) ---- */
   var AGE = {18:265,19:282,20:300,21:300,22:300,23:300,24:300,25:300,26:300,27:300,28:300,29:300,
              30:286,31:270,32:256,33:240,34:226,35:210,36:196,37:180,38:166,39:150,40:136,41:106,42:76,43:46,44:16};
@@ -881,7 +920,7 @@
     var data = {
       type: 'unlock', first_name: val('first_name'), phone: val('phone'), email: val('email'),
       notify: !!(fld('notify') && fld('notify').checked), website: val('website'),
-      answers: answers, page: location.href
+      answers: answers, page: location.href, meta: meta()
     };
 
     var badName = null, badMsg = '';
@@ -985,12 +1024,12 @@
   /* ---- Navigation ---- */
   function goNext(){
     if (idx >= GATE || !answers[STEPS[idx].key]) return;
-    if (!started){ started = true; track('ivpt_start'); }
+    if (!started){ started = true; startedAt = Date.now(); track('ivpt_start'); }
     track('ivpt_step', {step: idx + 1, step_name: STEPS[idx].key});
     idx++;
     if (idx === GATE && unlocked && contact){
       // Already gave details this visit: don't ask twice. Update sales silently and reveal.
-      postLead(Object.assign({}, contact, {answers: answers, page: location.href})).catch(function(){});
+      postLead(Object.assign({}, contact, {answers: answers, page: location.href, meta: meta()})).catch(function(){});
       reveal(true); return;
     }
     renderStep();
